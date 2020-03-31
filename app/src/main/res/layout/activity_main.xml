@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/txTorStatus"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="2dp"
+        android:background="#F3FFEE"
+        android:paddingLeft="3dp"
+        android:paddingEnd="1dp"
+        android:textColor="#181717"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTor" />
+
+    <Button
+        android:id="@+id/btnTor"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:text="Start Tor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnRestartApp"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:text="Restart App"
+        app:layout_constraintStart_toEndOf="@+id/cxUseBridges"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/cxUseBridges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Bridges"
+        app:layout_constraintBottom_toTopOf="@+id/txTorStatus"
+        app:layout_constraintStart_toEndOf="@+id/btnTor"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txVpnStatus"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="#F3FFEE"
+        android:paddingLeft="3dp"
+        android:paddingEnd="1dp"
+        android:textColor="#181717"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txTorStatus" />
+
+    <Button
+        android:id="@+id/btnTorTest"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:text="Test Tor Connection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txTorStatus" />
+
+    <TextView
+        android:id="@+id/txTorTestStatus"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="#F3FFEE"
+        android:paddingLeft="3dp"
+        android:paddingTop="1dp"
+        android:paddingEnd="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTorTest" />
+
+    <TextView
+        android:id="@+id/txTorTestStatus2"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="#F3FFEE"
+        android:paddingLeft="3dp"
+        android:paddingTop="1dp"
+        android:paddingEnd="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txTorTestStatus" />
+
+    <TextView
+        android:id="@+id/txTorTestStatus3"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="#F3FFEE"
+        android:paddingLeft="3dp"
+        android:paddingTop="1dp"
+        android:paddingEnd="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txTorTestStatus2" />
+
+    <ListView
+        android:id="@+id/statusView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txTorTestStatus3"
+        app:layout_constraintVertical_bias="1.0">
+
+    </ListView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

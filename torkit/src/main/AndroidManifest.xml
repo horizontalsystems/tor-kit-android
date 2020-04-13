@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.horizontalsystems.tor">
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <application>
+    <application android:extractNativeLibs="true">
         <service android:name=".TorService" android:exported="false" android:stopWithTask="false" />
     </application>
 

@@ -28,8 +28,7 @@ class TorControl(
     private var controlConn: TorControlConnection? = null
     private var torEventHandler: TorEventHandler? = null
     private var torProcessId: Int = -1
-    private val MAX_BOOTSTRAP_CHECK_TRIES = 50
-
+    private val MAX_BOOTSTRAP_CHECK_TRIES = 60
 
     fun eventMonitor(torInfo: Tor.Info? = null, msg: String? = null) {
         msg?.let {
@@ -183,7 +182,9 @@ class TorControl(
                 torInfo.connection.status = ConnectionStatus.CONNECTED
                 eventMonitor(torInfo, msg = "Tor Bootstrapped 100%")
             } else if (isSuccess == -1 || tries >= MAX_BOOTSTRAP_CHECK_TRIES) {
+                // if max tries exceeds then shutdown tor.
                 torInfo.connection.status = ConnectionStatus.FAILED
+                shutdownTor()
                 eventMonitor(torInfo)
             }
         }

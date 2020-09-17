@@ -41,12 +41,10 @@ class TorService : Service() {
     fun stop() {
         TorManager.instance.stop().subscribe(
             {
-                // Close notifications and exit App
+                // Close notifications
                 stopForeground(true)
-                exitProcess(0)
             }, {
-                //Exit app on Error
-                exitProcess(0)
+                //On error do not close notification
             })
     }
 

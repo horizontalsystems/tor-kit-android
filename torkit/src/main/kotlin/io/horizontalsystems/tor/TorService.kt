@@ -35,17 +35,12 @@ class TorService : Service() {
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         stop()
+        exitProcess(0)
     }
 
     @SuppressLint("CheckResult")
     fun stop() {
-        TorManager.instance.stop().subscribe(
-            {
-                // Close notifications
-                stopForeground(true)
-            }, {
-                //On error do not close notification
-            })
+        stopForeground(true)
     }
 
     fun updateNotification(torInfo: Tor.Info?) {

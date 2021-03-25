@@ -35,6 +35,7 @@ class TorService : Service() {
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         stop()
+        stopSelf()
         exitProcess(0)
     }
 

@@ -45,12 +45,12 @@ dependencies {
 
     //api 'info.pluggabletransports.aptds:apt-meek-obfs4-legacy:1.0.7'
     api 'com.jaredrummler:android-shell:1.0.0'
-    api 'org.briarproject:jtorctl:0.3'
     api 'com.jaredrummler:android-shell:1.0.0'
     api 'com.offbynull.portmapper:portmapper:2.0.5'
 
     //  RxJava
     implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
+    implementation files('libs/jtorctl-0.3.jar')
 
     //  Test helpers
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.1'

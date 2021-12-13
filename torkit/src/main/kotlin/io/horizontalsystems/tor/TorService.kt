@@ -90,7 +90,7 @@ class TorService : Service() {
         val launchIntent: Intent =
             packageManager.getLaunchIntentForPackage(packageName) ?: return null
         launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        return PendingIntent.getActivity(this, 0, launchIntent, 0)
+        return PendingIntent.getActivity(this, 0, launchIntent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     private fun createNotificationChannel(ctx: Context, appName: String, channelId: String) {

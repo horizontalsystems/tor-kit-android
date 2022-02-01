@@ -1,12 +1,7 @@
 package io.horizontalsystems.tor
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
+import android.util.Log
 import io.horizontalsystems.tor.core.TorConstants
 import io.horizontalsystems.tor.utils.ConnectionManager
 import io.reactivex.Single
@@ -20,40 +15,40 @@ class TorKit(private val context: Context): TorManager.Listener {
 
     val torInfoSubject: PublishSubject<Tor.Info> = PublishSubject.create()
     private val torManager = TorManager(context, this)
-    private var torService: TorService? = null
+//    private var torService: TorService? = null
     private var torStarted = false
 
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            val binder = service as TorService.LocalBinder
-            torService = binder.getService()
-        }
+//    private val connection = object : ServiceConnection {
+//        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+//            val binder = service as TorService.LocalBinder
+//            torService = binder.getService()
+//        }
+//
+//        override fun onServiceDisconnected(arg0: ComponentName) {
+//            torService = null
+//        }
+//    }
 
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            torService = null
-        }
-    }
-
-    val isNotificationEnabled: Boolean
-        get() = when {
-            !NotificationManagerCompat.from(context).areNotificationsEnabled() -> false
-            else -> {
-                val notificationChannel = NotificationManagerCompat.from(context).getNotificationChannel(
-                    TorService.torNotificationChannelId)
-                notificationChannel?.importance != NotificationManagerCompat.IMPORTANCE_NONE
-            }
-        }
+//    val isNotificationEnabled: Boolean
+//        get() = when {
+//            !NotificationManagerCompat.from(context).areNotificationsEnabled() -> false
+//            else -> {
+//                val notificationChannel = NotificationManagerCompat.from(context).getNotificationChannel(
+//                    TorService.torNotificationChannelId)
+//                notificationChannel?.importance != NotificationManagerCompat.IMPORTANCE_NONE
+//            }
+//        }
 
     fun startTor(useBridges: Boolean){
         torStarted = true
         enableProxy()
         torManager.start(useBridges)
-        startService(context)
+//        startService(context)
     }
 
     fun stopTor(): Single<Boolean> {
         disableProxy()
-        torService?.stop()
+//        torService?.stop()
         torStarted = false
         return torManager.stop()
     }
@@ -104,17 +99,18 @@ class TorKit(private val context: Context): TorManager.Listener {
 
     override fun statusUpdate(torInfo: Tor.Info) {
         torInfoSubject.onNext(torInfo)
-        if (torStarted) {
-            torService?.updateNotification(torInfo)
-        }
+        Log.e("TOR", "statusUpdate: ${torInfo.connection} ${torInfo.status}" )
+//        if (torStarted) {
+//            torService?.updateNotification(torInfo)
+//        }
     }
 
-    private fun startService(context: Context) {
-        val serviceIntent = Intent(context, TorService::class.java)
-        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android")
-        context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
-
-        ContextCompat.startForegroundService(context, serviceIntent)
-    }
+//    private fun startService(context: Context) {
+//        val serviceIntent = Intent(context, TorService::class.java)
+//        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android")
+//        context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
+//
+//        ContextCompat.startForegroundService(context, serviceIntent)
+//    }
 
 }

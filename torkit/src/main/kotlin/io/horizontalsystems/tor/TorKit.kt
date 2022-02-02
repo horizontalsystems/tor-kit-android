@@ -99,7 +99,7 @@ class TorKit(private val context: Context): TorManager.Listener {
 
     override fun statusUpdate(torInfo: Tor.Info) {
         torInfoSubject.onNext(torInfo)
-        Log.e("TOR", "statusUpdate: ${torInfo.connection} ${torInfo.status}" )
+        Log.e("TOR", "statusUpdate: ${torInfo.connection.status} ${torInfo.status}" )
 //        if (torStarted) {
 //            torService?.updateNotification(torInfo)
 //        }

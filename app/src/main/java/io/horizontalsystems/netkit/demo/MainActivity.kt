@@ -4,13 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import io.horizontalsystems.tor.TorKit
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.http.GET
@@ -22,6 +23,7 @@ import java.io.PrintWriter
 import java.net.MalformedURLException
 import java.net.URL
 import kotlin.system.exitProcess
+import io.horizontalsystems.tor.TorKit
 
 
 @SuppressLint("SetTextI18n")
@@ -48,30 +50,30 @@ class MainActivity : AppCompatActivity() {
         torKit = TorKit(context = applicationContext)
         //-------------------------------------------
 
-        btnTor.setOnClickListener {
+        findViewById<Button>(R.id.btnTor)?.setOnClickListener {
             if (!torStarted) {
                 startTor()
                 torStarted = true
-                btnTor.text = "Stop Tor"
+                findViewById<Button>(R.id.btnTor)?.text = "Stop Tor"
             } else {
                 stopTor()
                 torStarted = false
-                btnTor.text = "Start Tor"
+                findViewById<Button>(R.id.btnTor)?.text = "Start Tor"
             }
         }
 
-        btnTorTest.setOnClickListener {
+        findViewById<Button>(R.id.btnTorTest).setOnClickListener {
             testTORConnection()
         }
 
-        btnRestartApp.setOnClickListener {
+        findViewById<Button>(R.id.btnRestartApp)?.setOnClickListener {
             finishAffinity()
             startActivity(Intent(applicationContext, MainActivity::class.java))
             exitProcess(0)
         }
 
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems)
-        statusView.adapter = adapter
+        findViewById<ListView>(R.id.statusView)?.adapter = adapter
     }
 
     override fun onDestroy() {
@@ -120,8 +122,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun testTORConnection() {
 
-        txTorTestStatus.text = "Getting IP Address ... "
-        txTorTestStatus2.text = "Checking socket connection ... "
+        findViewById<TextView>(R.id.txTorTestStatus).text = "Getting IP Address ... "
+        findViewById<TextView>(R.id.txTorTestStatus2).text = "Checking socket connection ... "
 
         getIP()
         // Last IP 185.220.101.29
@@ -154,7 +156,7 @@ class MainActivity : AppCompatActivity() {
 
         client.newCall(request).execute()
             .use { response ->
-                txTorTestStatus.text = response.body?.charStream()!!.readText()
+                findViewById<TextView>(R.id.txTorTestStatus).text = response.body?.charStream()!!.readText()
             }
 
     }
@@ -175,15 +177,15 @@ class MainActivity : AppCompatActivity() {
                 data = isw.read()
                 output += current
             }
-            txTorTestStatus.text = "IP assigned :$output"
+            findViewById<TextView>(R.id.txTorTestStatus).text = "IP assigned :$output"
 
         } catch (e: Exception) {
-            txTorTestStatus.text = e.toString()
+            findViewById<TextView>(R.id.txTorTestStatus).text = e.toString()
         } finally {
             urlConnection.disconnect()
         }
 
-        txTorTestStatus2.text = "Getting IP from RetroFit :"
+        findViewById<TextView>(R.id.txTorTestStatus2).text = "Getting IP from RetroFit :"
 
     }
 
@@ -193,9 +195,9 @@ class MainActivity : AppCompatActivity() {
 
         disposables.add(
             obser.getIP("/").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> txTorTestStatus2.text = "IP assigned :$result" },
+                .subscribe({ result -> findViewById<TextView>(R.id.txTorTestStatus2).text = "IP assigned :$result" },
                     { error ->
-                        txTorTestStatus2.text = error.toString()
+                        findViewById<TextView>(R.id.txTorTestStatus2).text = error.toString()
                     })
         )
     }
@@ -212,7 +214,7 @@ class MainActivity : AppCompatActivity() {
             val hostname = url.host
             val port = 80
 
-            txTorTestStatus3.text = "Getting IP from socket connection"
+            findViewById<TextView>(R.id.txTorTestStatus3).text = "Getting IP from socket connection"
             val socket = torKit.getSocketConnection(hostname, port)
 
             val output = socket.getOutputStream()
@@ -234,7 +236,7 @@ class MainActivity : AppCompatActivity() {
 
             while (reader.readLine().also { line = it } != null) {
                 if (line.contains("{\"ip")) {
-                    txTorTestStatus3.text = line
+                    findViewById<TextView>(R.id.txTorTestStatus3).text = line
                     break
                 }
             }
@@ -244,7 +246,7 @@ class MainActivity : AppCompatActivity() {
             socket.close()
 
         } catch (e: Exception) {
-            txTorTestStatus3.text = e.toString()
+            findViewById<TextView>(R.id.txTorTestStatus3).text = e.toString()
         } finally {
         }
     }
@@ -270,7 +272,7 @@ class MainActivity : AppCompatActivity() {
                     // prints character
                     out = out + c
                 }
-                txTorTestStatus2.text = out
+                findViewById<TextView>(R.id.txTorTestStatus2).text = out
 
             }
     }

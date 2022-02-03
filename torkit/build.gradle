@@ -37,6 +37,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
+    //Android Tor
+    implementation 'info.guardianproject:jtorctl:0.4.5.7'
+
     //api 'info.pluggabletransports.aptds:apt-meek-obfs4-legacy:1.0.7'
     api 'com.jaredrummler:android-shell:1.0.0'
     api 'com.jaredrummler:android-shell:1.0.0'
@@ -44,7 +47,6 @@ dependencies {
 
     //  RxJava
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
-    implementation files('libs/jtorctl-0.3.jar')
 
     //  Test helpers
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.1'

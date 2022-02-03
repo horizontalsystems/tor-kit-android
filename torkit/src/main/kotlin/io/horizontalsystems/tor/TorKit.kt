@@ -15,7 +15,10 @@ class TorKit(context: Context) : TorManager.Listener {
 
     val torInfoSubject: PublishSubject<Tor.Info> = PublishSubject.create()
     private val torManager = TorManager(context, this)
+    private val torNotificationManager = TorNotificationManager(context)
     private var torStarted = false
+
+    val notificationsEnabled by torNotificationManager::isNotificationEnabled
 
     fun startTor(useBridges: Boolean) {
         torStarted = true
@@ -75,6 +78,11 @@ class TorKit(context: Context) : TorManager.Listener {
 
     override fun statusUpdate(torInfo: Tor.Info) {
         torInfoSubject.onNext(torInfo)
+        if (torStarted) {
+            torNotificationManager.showNotification(torInfo)
+        } else {
+            torNotificationManager.removeNotification()
+        }
         Log.v(
             "TORKIT",
             "statusUpdate connection: ${torInfo.connection.status} status: ${torInfo.status}"

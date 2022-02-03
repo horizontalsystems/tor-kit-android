@@ -47,7 +47,7 @@ object NativeLoader {
 
             return true
         } catch (e: Exception) {
-            Log.e(TAG, e.message)
+            Log.e(TAG, "error", e)
 
         } finally {
 
@@ -55,7 +55,7 @@ object NativeLoader {
                 try {
                     stream.close()
                 } catch (e: Exception) {
-                    Log.e(TAG, e.message)
+                    Log.e(TAG, "error", e)
                 }
             }
 
@@ -63,7 +63,7 @@ object NativeLoader {
                 try {
                     zipFile.close()
                 } catch (e: Exception) {
-                    Log.e(TAG, e.message)
+                    Log.e(TAG, "error", e)
                 }
             }
         }

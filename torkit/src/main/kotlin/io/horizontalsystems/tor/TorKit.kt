@@ -1,12 +1,7 @@
 package io.horizontalsystems.tor
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
+import android.util.Log
 import io.horizontalsystems.tor.core.TorConstants
 import io.horizontalsystems.tor.utils.ConnectionManager
 import io.reactivex.Single
@@ -16,44 +11,23 @@ import java.net.HttpURLConnection
 import java.net.Socket
 import java.net.URL
 
-class TorKit(private val context: Context): TorManager.Listener {
+class TorKit(context: Context) : TorManager.Listener {
 
     val torInfoSubject: PublishSubject<Tor.Info> = PublishSubject.create()
     private val torManager = TorManager(context, this)
-    private var torService: TorService? = null
+    private val torNotificationManager = TorNotificationManager(context)
     private var torStarted = false
 
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            val binder = service as TorService.LocalBinder
-            torService = binder.getService()
-        }
+    val notificationsEnabled by torNotificationManager::isNotificationEnabled
 
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            torService = null
-        }
-    }
-
-    val isNotificationEnabled: Boolean
-        get() = when {
-            !NotificationManagerCompat.from(context).areNotificationsEnabled() -> false
-            else -> {
-                val notificationChannel = NotificationManagerCompat.from(context).getNotificationChannel(
-                    TorService.torNotificationChannelId)
-                notificationChannel?.importance != NotificationManagerCompat.IMPORTANCE_NONE
-            }
-        }
-
-    fun startTor(useBridges: Boolean){
+    fun startTor(useBridges: Boolean) {
         torStarted = true
         enableProxy()
         torManager.start(useBridges)
-        startService(context)
     }
 
     fun stopTor(): Single<Boolean> {
         disableProxy()
-        torService?.stop()
         torStarted = false
         return torManager.stop()
     }
@@ -105,16 +79,14 @@ class TorKit(private val context: Context): TorManager.Listener {
     override fun statusUpdate(torInfo: Tor.Info) {
         torInfoSubject.onNext(torInfo)
         if (torStarted) {
-            torService?.updateNotification(torInfo)
+            torNotificationManager.showNotification(torInfo)
+        } else {
+            torNotificationManager.removeNotification()
         }
-    }
-
-    private fun startService(context: Context) {
-        val serviceIntent = Intent(context, TorService::class.java)
-        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android")
-        context.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
-
-        ContextCompat.startForegroundService(context, serviceIntent)
+        Log.v(
+            "TORKIT",
+            "statusUpdate connection: ${torInfo.connection.status} status: ${torInfo.status}"
+        )
     }
 
 }

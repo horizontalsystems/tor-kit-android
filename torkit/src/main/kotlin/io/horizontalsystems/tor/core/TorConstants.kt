@@ -27,7 +27,6 @@ interface TorConstants {
         const val SOCKS_PROXY_PORT_DEFAULT = "9050"
 
         var FILE_WRITE_BUFFER_SIZE = 1024
-        var BINARY_TOR_VERSION = "0.4.1.6-openssl1.0.2p"
 
         fun getIntValue(value: String):Int {
             try{
